@@ -19,16 +19,17 @@ apt-get install -y \
 
 # Install config files
 echo "[ELI DOTFILES] Installing config files..."
-cp ./dotfiles/vimrc "$HOME/.vimrc"
-cp ./dotfiles/bashrc "$HOME/.bashrc"
+cp $(pwd)/dotfiles/vimrc "$HOME/.vimrc"
+cp $(pwd)/dotfiles/bashrc "$HOME/.bashrc"
 
 # Install minimal Vim plugins
 echo "[ELI DOTFILES] Installing Vim plugins..."
 mkdir -p "$HOME/.vim/pack/plugins/start"
 git clone https://github.com/fatih/vim-go.git "$HOME/.vim/pack/plugins/start/vim-go"
-vim -c ':GoInstallBinaries' -c 'qa!'
+vim +'GoInstallBinaries' +qa;
 git clone https://github.com/rust-lang/rust.vim "$HOME/.vim/pack/plugins/start/rust.vim"
 git clone https://github.com/scrooloose/nerdtree "$HOME/.vim/pack/plugins/start/nerdtree"
+git clone https://github.com/vim-airline/vim-airline.git "$HOME/.vim/pack/plugins/start/vim-airline"
 
 # Register SSH keys from GitHub
 echo "[ELI DOTFILES] Installing authorized SSH keys..."
