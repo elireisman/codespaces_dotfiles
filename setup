@@ -9,12 +9,14 @@ apt-get install -y \
   wget \
   vim \
   jq \
-  rg \
-  watch \
+  ripgrep \
+  procps \
   shellcheck \
-  ctags \
+  exuberant-ctags \
   rbenv \
   htop \
+  tree \
+  tshark \
   iftop
 
 # Install config files
