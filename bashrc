@@ -1,0 +1,121 @@
+export EDITOR=vim
+export PAGER=less
+export GOPRIVATE=github.com
+
+# Git aliases
+alias gb='git branch '
+alias gco='git checkout '
+alias ga='git add '
+alias gs='git status '
+alias gl='git log '
+alias gln='git log --name-only'
+alias glp='git log -p'
+alias gcm='git commit -m '
+alias gpr='git pull --rebase'
+alias gprom='git pull --rebase origin master'
+alias gpromm='git pull --rebase origin main'
+alias gd='git diff '
+alias gdc='git diff --cached'
+
+# Misc. aliases
+alias ll='ls -lahFG '
+alias vi='vim -p '
+alias vim='vim -p '
+alias rmdocker='docker ps -a | cut -d " " -f1 | grep -v CONTAINER | xargs docker rm -f'
+
+# functions
+function gri {
+	if [[ "$1" =~ [0-9]+ ]] ; then
+            git rebase -i 'HEAD~'$1
+        fi
+}
+
+function vimf {
+  local FILEZ=""
+
+  for arg in "$@"; do
+    FILEZ="$FILEZ $(echo "$(find "$arg" -type f)")"
+  done
+
+  vim $FILEZ
+}
+
+function ints_to_chars {
+  for ch in $(cat "$1"); do
+    printf "\x$(printf %x $ch)"
+  done
+}
+
+# Find->Replace with SED, Args:
+# 1. regex pattern, escaping / as \/
+# 2. replace string, escaping / as \/
+# 3. the file to edit (permanently mutates!)
+function sedi {
+  sed -i '' 's/'$1'/'$2'/g' $3 ;
+}
+
+# gofmt + git add dirs of Go files recursively. skips vendor dirs
+function gfa {
+  local FILEZ=""
+  for arg in "$@"; do
+    local NEXTFILEZ=$(find "$arg" -type f -name '*.go')
+    FILEZ="$FILEZ $(echo ${NEXTFILEZ[@]} | grep -v vendor)"
+  done
+
+  for x in $FILEZ; do
+    gofmt -s -w "$x"
+    git add "$x"
+  done
+}
+
+# bash prompt formatting
+function parse_git_branch() {
+	BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+	if [ ! "${BRANCH}" == "" ]
+	then
+		STAT=`parse_git_dirty`
+		echo "[${BRANCH}${STAT}]"
+	else
+		echo ""
+	fi
+}
+
+function parse_git_dirty {
+	status=`git status 2>&1 | tee`
+	dirty=`echo -n "${status}" 2> /dev/null | grep "modified:" &> /dev/null; echo "$?"`
+	untracked=`echo -n "${status}" 2> /dev/null | grep "Untracked files" &> /dev/null; echo "$?"`
+	ahead=`echo -n "${status}" 2> /dev/null | grep "Your branch is ahead of" &> /dev/null; echo "$?"`
+	newfile=`echo -n "${status}" 2> /dev/null | grep "new file:" &> /dev/null; echo "$?"`
+	renamed=`echo -n "${status}" 2> /dev/null | grep "renamed:" &> /dev/null; echo "$?"`
+	deleted=`echo -n "${status}" 2> /dev/null | grep "deleted:" &> /dev/null; echo "$?"`
+	bits=''
+	if [ "${renamed}" == "0" ]; then
+		bits=">${bits}"
+	fi
+	if [ "${ahead}" == "0" ]; then
+		bits="*${bits}"
+	fi
+	if [ "${newfile}" == "0" ]; then
+		bits="+${bits}"
+	fi
+	if [ "${untracked}" == "0" ]; then
+		bits="?${bits}"
+	fi
+	if [ "${deleted}" == "0" ]; then
+		bits="x${bits}"
+	fi
+	if [ "${dirty}" == "0" ]; then
+		bits="!${bits}"
+	fi
+	if [ ! "${bits}" == "" ]; then
+		echo " ${bits}"
+	else
+		echo ""
+	fi
+}
+
+export PS1="🔑 \[\e[33m\][\[\e[m\]\u\[\e[33m\]]\[\e[m\]    ⏰ \[\e[33m\]\t\[\e[m\]    📍 \[\e[32m\]\w\[\e[m\]    ⚠️ \[\e[36m\]\`parse_git_branch\`\[\e[m\]\n$ "
+
+# must go last! 
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi

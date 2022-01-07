@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Install config files
+echo "[ELI DOTFILES] Installing config files..."
+cp ./vimrc "$HOME/.vimrc"
+cp ./bashrc "$HOME/.bashrc"
+
+# Install tools
+echo "[ELI DOTFILES] Installing tools..."
+apt-get install -y \
+  curl \
+  wget \
+  vim \
+  jq \
+  rg \
+  watch \
+  shellcheck \
+  ctags \
+  rbenv \
+  htop \
+  iftop
+
+# Install minimal Vim plugins
+echo "[ELI DOTFILES] Installing Vim plugins..."
+mkdir -p "$HOME/.vim/pack/plugins/start"
+git clone https://github.com/fatih/vim-go.git "$HOME/.vim/pack/plugins/start/vim-go"
+vim -c ':GoInstallBinaries' -c 'qa!'
+git clone https://github.com/rust-lang/rust.vim "$HOME/.vim/pack/plugins/start/rust.vim"
+git clone https://github.com/scrooloose/nerdtree "$HOME/.vim/pack/plugins/start/nerdtree"
+
+# Register SSH keys from GitHub
+echo "[ELI DOTFILES] Installing authorized SSH keys..."
+mkdir -p "$HOME/.ssh"
+curl --silent --fail "https://github.com/elireisman.keys" > "$HOME/.ssh/authorized_keys"
+
