@@ -16,8 +16,6 @@ set termguicolors
 set display+=lastline
 set hlsearch
 
-" set encoding=utf-8
-
 " tab navigation shortcuts for `vim -p ...`
 set tabpagemax=200
 nmap <C-j> :tabp<CR>
