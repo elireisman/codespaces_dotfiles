@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
-
-# Install config files
-echo "[ELI DOTFILES] Installing config files..."
-cp ./vimrc "$HOME/.vimrc"
-cp ./bashrc "$HOME/.bashrc"
+set -eu +x -o pipefail
 
 # Install tools
 echo "[ELI DOTFILES] Installing tools..."
@@ -21,6 +16,11 @@ apt-get install -y \
   rbenv \
   htop \
   iftop
+
+# Install config files
+echo "[ELI DOTFILES] Installing config files..."
+cp ./dotfiles/vimrc "$HOME/.vimrc"
+cp ./dotfiles/bashrc "$HOME/.bashrc"
 
 # Install minimal Vim plugins
 echo "[ELI DOTFILES] Installing Vim plugins..."
