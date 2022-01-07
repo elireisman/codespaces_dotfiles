@@ -1,6 +1,6 @@
 export EDITOR=vim
 export PAGER=less
-export GOPRIVATE=github.com
+#export GOPRIVATE=github.com
 
 # Git aliases
 alias gb='git branch '

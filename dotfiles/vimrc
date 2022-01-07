@@ -28,25 +28,4 @@ nmap <C-q> :sessionoptions=buffers<CR>:mksession<CR>
 nmap <C-n> :NERDTreeToggle<CR>
 nmap <C-m> :tabnew<CR><C-p>
 
-" statusline customizations
-set laststatus=2
-" set statusline=%-48F\ (line\ %l\ of\ %L)
-
-function! InsertStatuslineColor(mode)
-  if a:mode == 'i'
-    hi statusline guibg=magenta
-  elseif a:mode == 'r'
-    hi statusline guibg=blue
-  else
-    hi statusline guibg=red
-  endif
-endfunction
-
-au InsertEnter * call InsertStatuslineColor(v:insertmode)
-au InsertChange * call InsertStatuslineColor(v:insertmode)
-au InsertLeave * hi statusline guibg=green
-
-" default the statusline to green when entering Vim
-hi statusline guibg=green
-
 let g:rustfmt_autosave = 1
