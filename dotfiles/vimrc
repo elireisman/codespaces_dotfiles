@@ -22,7 +22,10 @@ nmap <C-j> :tabp<CR>
 imap <C-j> <ESC>:w<CR>:tabp<CR>
 nmap <C-k> :tabn<CR>
 imap <C-k> <ESC>:w<CR>:tabn<CR>
-nmap <C-n> :tabnew<CR>:NERDTreeToggle<CR>
-nmap <C-m> :NERDTreeClose<CR>
+nmap <C-m> :tabnew<CR>
+nmap <C-n> :NERDTreeToggle<CR>
+imap <C-n> :w<CR>:tabnew<CR>:NERDTreeToggle<CR>
+nmap <C-p> :w<CR>:CtrlP<CR>
+imap <C-p> <ESC>:w<CR>:tabnew<CR>:CtrlP<Cr>
 
 let g:rustfmt_autosave = 1

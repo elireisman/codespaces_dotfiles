@@ -31,6 +31,7 @@ git clone https://github.com/fatih/vim-go.git "$HOME/.vim/pack/plugins/start/vim
 vim +'GoInstallBinaries' +qa;
 git clone https://github.com/rust-lang/rust.vim "$HOME/.vim/pack/plugins/start/rust.vim"
 git clone https://github.com/scrooloose/nerdtree "$HOME/.vim/pack/plugins/start/nerdtree"
+git clone https://github.com/ctrlpvim/ctrlp.vim.git "$HOME/.vim/pack/plugins/start/ctrlp.vim"
 git clone https://github.com/vim-airline/vim-airline.git "$HOME/.vim/pack/plugins/start/vim-airline"
 
 # Register SSH keys from GitHub
