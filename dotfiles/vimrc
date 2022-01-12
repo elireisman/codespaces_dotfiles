@@ -22,8 +22,7 @@ nmap <C-j> :tabp<CR>
 imap <C-j> <ESC>:w<CR>:tabp<CR>
 nmap <C-k> :tabn<CR>
 imap <C-k> <ESC>:w<CR>:tabn<CR>
-nmap <C-q> :sessionoptions=buffers<CR>:mksession<CR>
-nmap <C-n> :NERDTreeToggle<CR>
-nmap <C-m> :tabnew<CR><C-p>
+nmap <C-n> :tabnew<CR>:NERDTreeToggle<CR>
+nmap <C-m> :NERDTreeClose<CR>
 
 let g:rustfmt_autosave = 1
