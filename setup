@@ -22,7 +22,8 @@ apt-get install -y \
 # Install config files
 echo "[ELI DOTFILES] Installing config files..."
 cp $(pwd)/dotfiles/vimrc "$HOME/.vimrc"
-cp $(pwd)/dotfiles/bashrc "$HOME/.bashrc"
+cp $(pwd)/dotfiles/bashrc "$HOME/.bashrc_eli"
+echo "source $HOME/.bashrc_eli" >> "$HOME/.bashrc"
 
 # Install minimal Vim plugins
 echo "[ELI DOTFILES] Installing Vim plugins..."
