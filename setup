@@ -4,7 +4,7 @@ set -eu +x -o pipefail
 
 # Install tools
 echo "[ELI DOTFILES] Installing tools..."
-apt-get install -y \
+sudo apt-get install -y \
   curl \
   wget \
   vim \
@@ -19,14 +19,17 @@ apt-get install -y \
   tshark \
   iftop
 
+# sudo as "vscode" user for this part of the setup
+sudo su - vscode
+
 # Install config files
-echo "[ELI DOTFILES] Installing config files..."
+echo "[ELI DOTFILES] ($USER -> $HOME) Installing config files..."
 cp $(pwd)/dotfiles/vimrc "$HOME/.vimrc"
 cp $(pwd)/dotfiles/bashrc "$HOME/.bashrc_eli"
 echo "source $HOME/.bashrc_eli" >> "$HOME/.bashrc"
 
 # Install minimal Vim plugins
-echo "[ELI DOTFILES] Installing Vim plugins..."
+echo "[ELI DOTFILES] ($USER -> $HOME) Installing Vim plugins..."
 mkdir -p "$HOME/.vim/pack/plugins/start"
 git clone https://github.com/fatih/vim-go.git "$HOME/.vim/pack/plugins/start/vim-go"
 vim +'GoInstallBinaries' +qa;
@@ -37,7 +40,6 @@ git clone https://github.com/vim-airline/vim-airline.git "$HOME/.vim/pack/plugin
 git clone https://github.com/chrisbra/unicode.vim.git "$HOME/.vim/pack/plugins/start/unicode.vim"
 
 # Register SSH keys from GitHub
-echo "[ELI DOTFILES] Installing authorized SSH keys..."
+echo "[ELI DOTFILES] ($USER -> $HOME) Installing authorized SSH keys..."
 mkdir -p "$HOME/.ssh"
-curl --silent --fail "https://github.com/elireisman.keys" > "$HOME/.ssh/authorized_keys"
-
+curl --silent --fail "https://github.com/elireisman.keys" >> "$HOME/.ssh/authorized_keys"
