@@ -22,6 +22,21 @@ sudo apt-get install -y \
 # sudo as "vscode" user for this part of the setup
 sudo su - vscode
 
+# set up Git config
+echo "[ELI DOTFILES] ($USER -> $HOME) Update Git config..."
+for CHECKOUT in `ls /workspaces`; do
+  pushd "/workspaces/$CHECKOUT"
+  git config --local --unset-all user.email
+  git config --local --add user.email elireisman@github.com
+
+  git config --local --unset-all user.name
+  git config --local --add user.name elireisman
+
+  git config --local --unset-all github.user
+  git config --local --add github.user elireisman
+  popd
+done
+
 # Install config files
 echo "[ELI DOTFILES] ($USER -> $HOME) Installing config files..."
 cp $(pwd)/dotfiles/vimrc "$HOME/.vimrc"
