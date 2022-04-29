@@ -2,14 +2,14 @@
 
 set +e
 
-echo "[ELI DOTFILES] Clearing package cache lock..."
+echo "[ELI DOTFILES] (${USER:-UNSET} => ${HOME:-UNSET}) Clearing package cache lock..."
 sudo killall -9 dpkg apt apt-get
 sudo dpkg --configure -a
 
 set -eu +x -o pipefail
 
 # Install tools
-echo "[ELI DOTFILES] ($USER -> $HOME) Installing tools..."
+echo "[ELI DOTFILES] (${USER:-UNSET} => ${HOME:-UNSET}) Installing tools..."
 sudo apt update -y
 sudo apt install --allow-change-held-packages -y \
   curl \
@@ -27,12 +27,12 @@ sudo apt install --allow-change-held-packages -y \
   iftop
 
 # sudo as "vscode" user for this part of the setup
-if [[ "$USER" != vscode ]]; then
+if [[ "${USER:-UNSET}" != vscode ]]; then
   sudo su - vscode
 fi
 
 # set up Git config
-echo "[ELI DOTFILES] ($USER -> $HOME) Update Git config..."
+echo "[ELI DOTFILES] (${USER:-UNSET} => ${HOME:-UNSET}) Update Git config..."
 for CHECKOUT in `ls /workspaces`; do
   pushd "/workspaces/$CHECKOUT"
   git config --local --replace-all user.email elireisman@github.com
@@ -42,14 +42,14 @@ for CHECKOUT in `ls /workspaces`; do
 done
 
 # Install config files
-echo "[ELI DOTFILES] ($USER -> $HOME) Installing config files..."
+echo "[ELI DOTFILES] (${USER:-UNSET} => ${HOME:-UNSET}) Installing config files..."
 DOTFILES_BASE="/workspaces/.codespaces/.persistedshare/dotfiles"
 cp "$DOTFILES_BASE/dotfiles/vimrc" "$HOME/.vimrc"
 cp "$DOTFILES_BASE/dotfiles/bashrc" "$HOME/.bashrc_eli"
 echo "source $HOME/.bashrc_eli" >> "$HOME/.bashrc"
 
 # Install minimal Vim plugins
-echo "[ELI DOTFILES] ($USER -> $HOME) Installing Vim plugins..."
+echo "[ELI DOTFILES] (${USER:-UNSET} => ${HOME:-UNSET}) Installing Vim plugins..."
 mkdir -p "$HOME/.vim/pack/plugins/start"
 git clone https://github.com/fatih/vim-go.git "$HOME/.vim/pack/plugins/start/vim-go"
 vim +'GoInstallBinaries' +qa;
@@ -60,6 +60,6 @@ git clone https://github.com/vim-airline/vim-airline.git "$HOME/.vim/pack/plugin
 git clone https://github.com/chrisbra/unicode.vim.git "$HOME/.vim/pack/plugins/start/unicode.vim"
 
 # Register SSH keys from GitHub
-echo "[ELI DOTFILES] ($USER -> $HOME) Installing authorized SSH keys..."
+echo "[ELI DOTFILES]  (${USER:-UNSET} => ${HOME:-UNSET}) Installing authorized SSH keys..."
 mkdir -p "$HOME/.ssh"
 curl --silent --fail "https://github.com/elireisman.keys" >> "$HOME/.ssh/authorized_keys"
