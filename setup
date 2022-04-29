@@ -1,17 +1,10 @@
 #!/usr/bin/env bash
 
-set +e
-
-echo "[ELI DOTFILES] (${USER:-UNSET} => ${HOME:-UNSET}) Clearing package cache lock..."
-sudo killall -9 dpkg apt apt-get
-sudo dpkg --configure -a
-
 set -eu +x -o pipefail
 
 # Install tools
-echo "[ELI DOTFILES] (${USER:-UNSET} => ${HOME:-UNSET}) Installing tools..."
-sudo apt update -y
-sudo apt install --allow-change-held-packages -y \
+echo "[ELI DOTFILES] Installing tools..."
+sudo apt-get install -y \
   curl \
   wget \
   vim \
@@ -23,13 +16,11 @@ sudo apt install --allow-change-held-packages -y \
   rbenv \
   htop \
   tree \
-  tshark \
   iftop
 
-# sudo as "vscode" user for this part of the setup
-if [[ "${USER:-UNSET}" != vscode ]]; then
-  sudo su - vscode
-fi
+echo "[ELI DOTFILES] (${USER:-UNSET} => ${HOME:-UNSET}) Installing tshark..."
+echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debconf-set-selections
+sudo apt-get install -y tshark
 
 # set up Git config
 echo "[ELI DOTFILES] (${USER:-UNSET} => ${HOME:-UNSET}) Update Git config..."
