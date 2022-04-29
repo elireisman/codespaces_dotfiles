@@ -4,7 +4,7 @@ set -eu +x -o pipefail
 
 # Install tools
 echo "[ELI DOTFILES] Installing tools..."
-sudo apt-get install -y \
+sudo apt-get install --allow-change-held-packages -y \
   curl \
   wget \
   vim \
