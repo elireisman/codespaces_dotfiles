@@ -2,7 +2,7 @@
 
 set +e
 
-echo "[ELI DOTFILES] ($USER -> $HOME) Clearing package cache lock..."
+echo "[ELI DOTFILES] Clearing package cache lock..."
 sudo killall -9 dpkg apt apt-get
 sudo dpkg --configure -a
 
