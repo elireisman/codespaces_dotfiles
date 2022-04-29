@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
 
+set +e
+
+echo "[ELI DOTFILES] ($USER -> $HOME) Clearing package cache lock..."
+sudo killall -9 dpkg apt apt-get
+sudo dpkg --configure -a
+
 set -eu +x -o pipefail
 
 # Install tools
-echo "[ELI DOTFILES] Installing tools..."
-sudo apt-get install --allow-change-held-packages -y \
+echo "[ELI DOTFILES] ($USER -> $HOME) Installing tools..."
+sudo apt update -y
+sudo apt install --allow-change-held-packages -y \
   curl \
   wget \
   vim \
@@ -20,27 +27,25 @@ sudo apt-get install --allow-change-held-packages -y \
   iftop
 
 # sudo as "vscode" user for this part of the setup
-sudo su - vscode
+if [[ "$USER" != vscode ]]; then
+  sudo su - vscode
+fi
 
 # set up Git config
 echo "[ELI DOTFILES] ($USER -> $HOME) Update Git config..."
 for CHECKOUT in `ls /workspaces`; do
   pushd "/workspaces/$CHECKOUT"
-  git config --local --unset-all user.email
-  git config --local --add user.email elireisman@github.com
-
-  git config --local --unset-all user.name
-  git config --local --add user.name elireisman
-
-  git config --local --unset-all github.user
-  git config --local --add github.user elireisman
+  git config --local --replace-all user.email elireisman@github.com
+  git config --local --replace-all user.name elireisman
+  git config --local --replace-all github.user elireisman
   popd
 done
 
 # Install config files
 echo "[ELI DOTFILES] ($USER -> $HOME) Installing config files..."
-cp $(pwd)/dotfiles/vimrc "$HOME/.vimrc"
-cp $(pwd)/dotfiles/bashrc "$HOME/.bashrc_eli"
+DOTFILES_BASE="/workspaces/.codespaces/.persistedshare/dotfiles"
+cp "$DOTFILES_BASE/dotfiles/vimrc" "$HOME/.vimrc"
+cp "$DOTFILES_BASE/dotfiles/bashrc" "$HOME/.bashrc_eli"
 echo "source $HOME/.bashrc_eli" >> "$HOME/.bashrc"
 
 # Install minimal Vim plugins
