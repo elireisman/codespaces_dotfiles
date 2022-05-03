@@ -3,7 +3,7 @@
 set -eu +x -o pipefail
 
 # Install tools
-echo "[ELI DOTFILES] Installing tools..."
+echo "[ELI DOTFILES] (${USER:-UNSET} => ${HOME:-UNSET}) Installing tools..."
 sudo apt-get install -y \
   curl \
   wget \
@@ -24,13 +24,9 @@ sudo apt-get install -y tshark
 
 # set up Git config
 echo "[ELI DOTFILES] (${USER:-UNSET} => ${HOME:-UNSET}) Update Git config..."
-for CHECKOUT in `ls /workspaces`; do
-  pushd "/workspaces/$CHECKOUT"
-  git config --local --replace-all user.email elireisman@github.com
-  git config --local --replace-all user.name elireisman
-  git config --local --replace-all github.user elireisman
-  popd
-done
+git config  --replace-all user.email elireisman@github.com
+git config  --replace-all user.name elireisman
+git config  --replace-all github.user elireisman
 
 # Install config files
 echo "[ELI DOTFILES] (${USER:-UNSET} => ${HOME:-UNSET}) Installing config files..."
