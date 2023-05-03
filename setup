@@ -4,7 +4,7 @@ set -eu +x -o pipefail
 
 # Install tools
 echo "[ELI DOTFILES] (${USER:-UNSET} => ${HOME:-UNSET}) Installing tools..."
-sudo apt-get install -y \
+sudo apt install -y \
   curl \
   wget \
   vim \
